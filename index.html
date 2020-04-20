@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title>Bancaù de Silvette</title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/multi-style-layer.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/proj4.js"></script>
+        <script src="js/proj4leaflet.js"></script>
+        <script src="data/Chemins_1.js"></script>
+        <script src="data/Composteurs_2.js"></script>
+        <script src="data/Parcelles_3.js"></script>
+        <script src="data/ArbresFruitiers_4.js"></script>
+        <script src="data/Points_Eau_5.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+            highlightLayer.openPopup();
+        }
+        var crs = new L.Proj.CRS('EPSG:2154', '+proj=lcc +lat_1=49 +lat_2=44 +lat_0=46.5 +lon_0=3 +x_0=700000 +y_0=6600000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs', {
+            resolutions: [2800, 1400, 700, 350, 175, 84, 42, 21, 11.2, 5.6, 2.8, 1.4, 0.7, 0.35, 0.14, 0.07],
+        });
+        var map = L.map('map', {
+            crs: crs,
+            continuousWorld: false,
+            worldCopyJump: false, 
+            zoomControl:true, maxZoom:28, minZoom:1
+        })
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+            if (bounds_group.getLayers().length) {
+                map.fitBounds(bounds_group.getBounds());
+            }
+            map.setMaxBounds(map.getBounds());
+        }
+        var img_Fond_0 = 'data/Fond_0.png';
+        var img_bounds_Fond_0 = [[43.28012727064496,5.352753477379586],[43.28142369952015,5.355574555490196]];
+        var layer_Fond_0 = new L.imageOverlay(img_Fond_0, img_bounds_Fond_0);
+        bounds_group.addLayer(layer_Fond_0);
+        map.addLayer(layer_Fond_0);
+        function pop_Chemins_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Chemins_1_0() {
+            return {
+                pane: 'pane_Chemins_1',
+                opacity: 1,
+                color: 'rgba(219,30,42,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 5.0,
+                fillOpacity: 0,
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Chemins_1');
+        map.getPane('pane_Chemins_1').style.zIndex = 401;
+        map.getPane('pane_Chemins_1').style['mix-blend-mode'] = 'normal';
+        var layer_Chemins_1 = new L.geoJson(json_Chemins_1, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Chemins_1',
+            layerName: 'layer_Chemins_1',
+            pane: 'pane_Chemins_1',
+            onEachFeature: pop_Chemins_1,
+            style: style_Chemins_1_0,
+        });
+        bounds_group.addLayer(layer_Chemins_1);
+        map.addLayer(layer_Chemins_1);
+        function pop_Composteurs_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        var pattern_Composteurs_2_0 = new L.StripePattern({
+            weight: 0.3,
+            spaceWeight: 2.0,
+            color: '#df7100',
+            opacity: 1.0,
+            spaceOpacity: 0,
+            angle: 315
+        });
+        pattern_Composteurs_2_0.addTo(map);
+        function style_Composteurs_2_0() {
+            return {
+                pane: 'pane_Composteurs_2',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_Composteurs_2_0,
+                interactive: true,
+            }
+        }
+        var pattern_Composteurs_2_1 = new L.StripePattern({
+            weight: 0.3,
+            spaceWeight: 2.0,
+            color: '#df7100',
+            opacity: 1.0,
+            spaceOpacity: 0,
+            angle: 225
+        });
+        pattern_Composteurs_2_1.addTo(map);
+        function style_Composteurs_2_1() {
+            return {
+                pane: 'pane_Composteurs_2',
+                stroke: false,
+                fillOpacity: 1,
+                fillPattern: pattern_Composteurs_2_1,
+                interactive: true,
+            }
+        }
+        function style_Composteurs_2_2() {
+            return {
+                pane: 'pane_Composteurs_2',
+                opacity: 1,
+                color: 'rgba(223,113,0,1.0)',
+                dashArray: '',
+                lineCap: 'square',
+                lineJoin: 'bevel',
+                weight: 2.0,
+                fillOpacity: 0,
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Composteurs_2');
+        map.getPane('pane_Composteurs_2').style.zIndex = 402;
+        map.getPane('pane_Composteurs_2').style['mix-blend-mode'] = 'normal';
+        var layer_Composteurs_2 = new L.geoJson.multiStyle(json_Composteurs_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Composteurs_2',
+            layerName: 'layer_Composteurs_2',
+            pane: 'pane_Composteurs_2',
+            onEachFeature: pop_Composteurs_2,
+            styles: [style_Composteurs_2_0,style_Composteurs_2_1,style_Composteurs_2_2,]
+        });
+        bounds_group.addLayer(layer_Composteurs_2);
+        map.addLayer(layer_Composteurs_2);
+        function pop_Parcelles_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Surface</strong><br />' + (feature.properties['Surface'] !== null ? autolinker.link(feature.properties['Surface'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom'] !== null ? autolinker.link(feature.properties['Nom'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Cultures</strong><br />' + (feature.properties['Cultures'] !== null ? autolinker.link(feature.properties['Cultures'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Date d�observation</strong><br />' + (feature.properties['Date d�observation'] !== null ? autolinker.link(feature.properties['Date d�observation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Travaux et am�nagements</strong><br />' + (feature.properties['Travaux et am�nagements'] !== null ? autolinker.link(feature.properties['Travaux et am�nagements'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Projet futurs</strong><br />' + (feature.properties['Projet futurs'] !== null ? autolinker.link(feature.properties['Projet futurs'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Remarques</strong><br />' + (feature.properties['Remarques'] !== null ? autolinker.link(feature.properties['Remarques'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Parcelles_3_0() {
+            return {
+                pane: 'pane_Parcelles_3',
+                opacity: 1,
+                color: 'rgba(247,247,247,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(202,189,0,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Parcelles_3');
+        map.getPane('pane_Parcelles_3').style.zIndex = 403;
+        map.getPane('pane_Parcelles_3').style['mix-blend-mode'] = 'normal';
+        var layer_Parcelles_3 = new L.geoJson(json_Parcelles_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Parcelles_3',
+            layerName: 'layer_Parcelles_3',
+            pane: 'pane_Parcelles_3',
+            onEachFeature: pop_Parcelles_3,
+            style: style_Parcelles_3_0,
+        });
+        bounds_group.addLayer(layer_Parcelles_3);
+        map.addLayer(layer_Parcelles_3);
+        function pop_ArbresFruitiers_4(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Nom'] !== null ? autolinker.link(feature.properties['Nom'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Especes</strong><br />' + (feature.properties['Especes'] !== null ? autolinker.link(feature.properties['Especes'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Date plantation</strong><br />' + (feature.properties['Date plantation'] !== null ? autolinker.link(feature.properties['Date plantation'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Age</strong><br />' + (feature.properties['Age'] !== null ? autolinker.link(feature.properties['Age'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Amenagement</strong><br />' + (feature.properties['Amenagement'] !== null ? autolinker.link(feature.properties['Amenagement'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Travaux futurs</strong><br />' + (feature.properties['Travaux futurs'] !== null ? autolinker.link(feature.properties['Travaux futurs'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Remarques</strong><br />' + (feature.properties['Remarques'] !== null ? autolinker.link(feature.properties['Remarques'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_ArbresFruitiers_4_0() {
+            return {
+                pane: 'pane_ArbresFruitiers_4',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(0,0,0,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,255,255,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_ArbresFruitiers_4');
+        map.getPane('pane_ArbresFruitiers_4').style.zIndex = 404;
+        map.getPane('pane_ArbresFruitiers_4').style['mix-blend-mode'] = 'normal';
+        var layer_ArbresFruitiers_4 = new L.geoJson(json_ArbresFruitiers_4, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_ArbresFruitiers_4',
+            layerName: 'layer_ArbresFruitiers_4',
+            pane: 'pane_ArbresFruitiers_4',
+            onEachFeature: pop_ArbresFruitiers_4,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_ArbresFruitiers_4_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_ArbresFruitiers_4);
+        map.addLayer(layer_ArbresFruitiers_4);
+        function pop_Points_Eau_5(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                    if (typeof layer.closePopup == 'function') {
+                        layer.closePopup();
+                    } else {
+                        layer.eachLayer(function(feature){
+                            feature.closePopup()
+                        });
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Points_Eau_5_0() {
+            return {
+                pane: 'pane_Points_Eau_5',
+                radius: 8.0,
+                opacity: 1,
+                color: 'rgba(50,87,128,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 2.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(72,123,182,1.0)',
+                interactive: false,
+            }
+        }
+        map.createPane('pane_Points_Eau_5');
+        map.getPane('pane_Points_Eau_5').style.zIndex = 405;
+        map.getPane('pane_Points_Eau_5').style['mix-blend-mode'] = 'normal';
+        var layer_Points_Eau_5 = new L.geoJson(json_Points_Eau_5, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_Points_Eau_5',
+            layerName: 'layer_Points_Eau_5',
+            pane: 'pane_Points_Eau_5',
+            onEachFeature: pop_Points_Eau_5,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Points_Eau_5_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Points_Eau_5);
+        map.addLayer(layer_Points_Eau_5);
+            var title = new L.Control();
+            title.onAdd = function (map) {
+                this._div = L.DomUtil.create('div', 'info');
+                this.update();
+                return this._div;
+            };
+            title.update = function () {
+                this._div.innerHTML = '<h2>Bancaù de Silvette</h2>';
+            };
+            title.addTo(map);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/Points_Eau_5.png" /> Points_Eau': layer_Points_Eau_5,'<img src="legend/ArbresFruitiers_4.png" /> Arbres-Fruitiers': layer_ArbresFruitiers_4,'<img src="legend/Parcelles_3.png" /> Parcelles': layer_Parcelles_3,'<img src="legend/Composteurs_2.png" /> Composteurs': layer_Composteurs_2,'<img src="legend/Chemins_1.png" /> Chemins': layer_Chemins_1,"Fond": layer_Fond_0,},{collapsed:false}).addTo(map);
+        setBounds();
+        L.ImageOverlay.include({
+            getBounds: function () {
+                return this._bounds;
+            }
+        });
+        </script>
+    </body>
+</html>
