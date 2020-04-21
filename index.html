@@ -169,7 +169,7 @@
                         <td colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Nom'] !== null ? autolinker.link(feature.properties['Nom'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Nom</strong><br />' + (feature.properties['Nom'] !== null ? autolinker.link(feature.properties['Nom'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2"><strong>Mâturateur</strong><br />' + (feature.properties['Mâturateur'] !== null ? autolinker.link(feature.properties['Mâturateur'].toLocaleString()) : '') + '</td>\
@@ -234,16 +234,17 @@
                         <td colspan="2"><strong>id</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Surface'] !== null ? autolinker.link(feature.properties['Surface'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Surface (m²) :</strong><br />' + (feature.properties['Surface'] !== null ? autolinker.link(feature.properties['Surface'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2"><strong>Périmètre (m) :</strong><br />' + (feature.properties['Périmiètre'] !== null ? autolinker.link(feature.properties['Périmiètre'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Nom :'] !== null ? autolinker.link(feature.properties['Nom :'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Nom :</strong><br />' + (feature.properties['Nom :'] !== null ? autolinker.link(feature.properties['Nom :'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Description (Cultures et équipement) :'] !== null ? autolinker.link(feature.properties['Description (Cultures et équipement) :'].toLocaleString()) : '') + '</td>\
+                        <th scope="row">Description (cultures et équipement) :</th>\
+                        <td>' + (feature.properties['Description (Cultures et équipement) :'] !== null ? autolinker.link(feature.properties['Description (Cultures et équipement) :'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2"><strong>Plantation (date, détail) :</strong><br />' + (feature.properties['Plantation (date, détail) :'] !== null ? autolinker.link(feature.properties['Plantation (date, détail) :'].toLocaleString()) : '') + '</td>\
@@ -314,7 +315,7 @@
                         <td colspan="2"><strong>Identifiant</strong><br />' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
-                        <td colspan="2">' + (feature.properties['Nom'] !== null ? autolinker.link(feature.properties['Nom'].toLocaleString()) : '') + '</td>\
+                        <td colspan="2"><strong>Nom : </strong><br />' + (feature.properties['Nom'] !== null ? autolinker.link(feature.properties['Nom'].toLocaleString()) : '') + '</td>\
                     </tr>\
                     <tr>\
                         <td colspan="2"><strong>Espèces : </strong><br />' + (feature.properties['Espèces'] !== null ? autolinker.link(feature.properties['Espèces'].toLocaleString()) : '') + '</td>\
